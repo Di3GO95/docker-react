@@ -1,0 +1,25 @@
+version: '3'
+services: 
+    web:
+        stdin_open: true    # -i
+        tty: true           # -t
+        restart: always
+        build: 
+            context: .
+            dockerfile: Dockerfile.dev
+        ports: 
+            - "3000:3000"
+        volumes: 
+            - /app/node_modules # do not map from outside to node_modules
+            - /D/_projects/work/udemy/dockerAndKubernetes/git/project/frontend:/app # everything in this folder (before :) is mapped to the app folder (after :)
+    tests:
+        stdin_open: true    # -i
+        tty: true           # -t
+        restart: always
+        build: 
+            context: .
+            dockerfile: Dockerfile.dev
+        volumes: 
+            - /app/node_modules # do not map from outside to node_modules
+            - /D/_projects/work/udemy/dockerAndKubernetes/git/project/frontend:/app # everything in this folder (before :) is mapped to the app folder (after :)
+        command: ["npm", "run", "test"]
